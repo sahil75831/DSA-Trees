@@ -1,37 +1,48 @@
-// Given a binary tree, find its height. in javascript
+// Given two binary trees, the task is to find if both of them are identical or not. 
 
-// To find the height of a binary tree in JavaScript, you can use a recursive approach. The height of a binary tree is the maximum depth, i.e., the maximum number of nodes from the root node to any leaf node.
+class Node {
+    constructor(data) {
+      this.data = data;
+      this.left = null;
+      this.right = null;
+    }
+  }
 
 // Example usage:
-// Create a binary tree:
+// Create 1 binary tree:
 //       1
 //      / \
 //     2   3
 //    / \
 //   4   5
 
-class TreeNode{
-    constructor(val, left = null, right = null){
-        this.val = val
-        this.left = left
-        this.right = right
-    }
-}
-function getHeight(rootNode) {
-    if (rootNode === null) {
-        return 0;
-      }
-    const leftHeight = getHeight(rootNode.left)
-    const rightHeight = getHeight(rootNode.right)
-    return (1+Math.max(leftHeight, rightHeight))
+// Create 2 binary tree:
+//       1
+//      / \
+//     2   3
+//    / \
+//   14   5
+function areTreesIdentical(root1, root2){
+    if(root1===null && root2===null) return true
+    if((root1===null && root2!==null) || (root1!==null && root2===null)) return false
+    if(root1.data !== root2.data) return false
+    return (areTreesIdentical(root1.left, root2.left) && areTreesIdentical(root1.right, root2.right))
+    
 }
 
+// Create the first binary tree
+const root1 = new Node(1);
+root1.left = new Node(2);
+root1.right = new Node(3);
+root1.left.left = new Node(4);
+root1.left.right = new Node(5);
 
-const root = new TreeNode(1);
-root.left = new TreeNode(2);
-root.right = new TreeNode(3);
-root.left.left = new TreeNode(4);
-root.left.right = new TreeNode(5);
+// Create the second binary tree
+const root2 = new Node(1);
+root2.left = new Node(2);
+root2.right = new Node(3);
+root2.left.left = new Node(14);
+root2.left.right = new Node(5);
 
-const height = getHeight(root);
-console.log("Height of the binary tree:", height); // Output: 3
+const result = areTreesIdentical(root1, root2);
+console.log(result); // Output: false
