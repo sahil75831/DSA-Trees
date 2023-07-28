@@ -1,53 +1,28 @@
-// To check whether a binary tree is symmetric or not, you need to compare the left and right subtrees of the root to see if they are mirror images of each other. If they are, then the binary tree is symmetric.
-
-// Here's a JavaScript function that checks if a binary tree is symmetric:
-
-
 class TreeNode {
-  constructor(val) {
-    this.val = val;
-    this.left = this.right = null;
+  constructor(data, left = null, right = null) {
+    this.data = data;
+    this.left = left;
+    this.right = right;
   }
 }
-
-function isSymmetric(root) {
-  if (root === null) return true;
-  function isMirror(left, right) {
-    if (left===null && right===null) return true;
-    if (left.val !== right.val) return false;
-    else  return isMirror(left.left, right.right) && isMirror(left.right, right.left);
+function balancedTree(root) {
+    if(root===null) return true
+  function getHeight(root) {
+    if (root === null) return 0;
+    return (1 + Math.max(getHeight(root.left), getHeight(root.right)));
   }
-  return isMirror(root.left, root.right);
+  const leftHeight = getHeight(root.left);
+  const rightHeight = getHeight(root.right);
+
+  if(Math.abs(leftHeight - rightHeight) > 1) return false
+  return (balancedTree(root.left) && balancedTree(root.right))
 }
-
-// Helper function to print the binary tree (for visualization)
-function printBinaryTree(root) {
-  if (!root) {
-    return;
-  }
-
-  console.log(root.val);
-  printBinaryTree(root.left);
-  printBinaryTree(root.right);
-}
-// Example binary tree:
-//       1
-//      / \
-//     2   2
-//    / \ / \
-//   3  4 4  3
-const root = new TreeNode(1);
-root.left = new TreeNode(2);
-root.right = new TreeNode(2);
-root.left.left = new TreeNode(3);
-root.left.right = new TreeNode(4);
-root.right.left = new TreeNode(4);
-root.right.right = new TreeNode(3);
-
-// Print the original binary tree
-console.log("Original binary tree:");
-printBinaryTree(root);
+// Example usage:
+const tree = new TreeNode(1);
+tree.left = new TreeNode(2);
+tree.right = new TreeNode(3);
+tree.left.left = new TreeNode(4);
+tree.left.right = new TreeNode(5);
 
 
-const result = isSymmetric(root);
-console.log("result : ", result);
+console.log(balancedTree(tree)); // Output: true
